@@ -1,30 +1,12 @@
-apiVersion: v2
-appVersion: v21.12
-dependencies:
-- name: common
-  repository: https://library-charts.k8s-at-home.com
-  version: 4.3.0
-- condition: mariadb.enabled
-  name: mariadb
-  repository: https://charts.bitnami.com/bitnami
-  version: 10.2.0
-description: A simple, self-hosted, easy-to-use platform for organising and storing
-  information.
-home: https://github.com/k8s-at-home/charts/tree/master/charts/stable/bookstack
-icon: https://avatars3.githubusercontent.com/u/20912696?s=400&v=4?sanitize=true
-keywords:
-- bookstack
-- book
-- stack
-- organizer
-- server
-- hosted
-kubeVersion: '>=1.16.0-0'
-maintainers:
-- email: leminhphap2607@gmail.com
-  name: leminhphap
-name: Gotrust docs
+apiVersion: v1
+appVersion: 0.27.5
+description: Wiki Gotrust.
+name: bookstack
+version: 1.2.1
+home: https://www.bookstackapp.com/
+icon: https://github.com/BookStackApp/website/blob/master/static/images/logo.png
 sources:
-- https://www.bookstackapp.com/
-- https://hub.docker.com/r/linuxserver/bookstack
-version: 4.0.0
+- https://github.com/BookStackApp/BookStack
+maintainers:
+- name: wiki
+  email: leminhphap2607@gmail.com
