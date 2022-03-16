@@ -2,7 +2,7 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ template "mariadb.fullname" . }}
+  name: "mariadb"
   labels:
     app: "{{ template "mariadb.name" . }}"
     component: "master"

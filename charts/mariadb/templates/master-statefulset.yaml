@@ -147,7 +147,7 @@ spec:
             - name: MARIADB_REPLICATION_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "mariadb.secretName" . }}
+                  name: "mariadb"
                   key: mariadb-replication-password
             {{- end }}
             {{- end }}
