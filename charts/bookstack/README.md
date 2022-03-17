@@ -1,145 +1,145 @@
-# bookstack
+# Bookstack
 
-![Version: 4.0.0](https://img.shields.io/badge/Version-4.0.0-informational?style=flat-square) ![AppVersion: v21.12](https://img.shields.io/badge/AppVersion-v21.12-informational?style=flat-square)
+[Bookstack](https://www.bookstackapp.com) is a simple, easy-to-use platform for organising and storing information.
 
-A simple, self-hosted, easy-to-use platform for organising and storing information.
+## TL;DR;
 
-**This chart is not maintained by the upstream project and any issues with the chart should be raised [here](https://github.com/k8s-at-home/charts/issues/new/choose)**
-
-## Source Code
-
-* <https://www.bookstackapp.com/>
-* <https://hub.docker.com/r/linuxserver/bookstack>
-
-## Requirements
-
-Kubernetes: `>=1.16.0-0`
-
-## Dependencies
-
-| Repository | Name | Version |
-|------------|------|---------|
-| https://charts.bitnami.com/bitnami | mariadb | 10.2.0 |
-| https://library-charts.k8s-at-home.com | common | 4.3.0 |
-
-## TL;DR
-
-```console
-helm repo add k8s-at-home https://k8s-at-home.com/charts/
-helm repo update
-helm install bookstack k8s-at-home/bookstack
+```bash
+$ helm install stable/bookstack
 ```
+
+## Introduction
+
+This chart bootstraps a [Bookstack](https://hub.docker.com/r/solidnerd/bookstack/) deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+
+It also uses the [MariaDB chart](https://github.com/kubernetes/charts/tree/master/stable/mariadb) which satisfies the database requirements of the application.
+
+## Prerequisites
+
+- Kubernetes 1.9+ with Beta APIs enabled
+- PV provisioner support in the underlying infrastructure
 
 ## Installing the Chart
 
-To install the chart with the release name `bookstack`
+To install the chart with the release name `my-release`:
 
-```console
-helm install bookstack k8s-at-home/bookstack
+```bash
+$ helm update --install my-release stable/bookstack
 ```
+
+The command deploys Bookstack on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
+
+> **Tip**: List all releases using `helm list`
 
 ## Uninstalling the Chart
 
-To uninstall the `bookstack` deployment
+To uninstall/delete the `my-release` deployment:
 
-```console
-helm uninstall bookstack
+```bash
+$ helm delete my-release
 ```
 
-The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
+The command removes all the Kubernetes components associated with the chart and deletes the release.
 
 ## Configuration
 
-Read through the [values.yaml](./values.yaml) file. It has several commented out suggested values.
-Other values may be used from the [values.yaml](https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/values.yaml) from the [common library](https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common).
+The following table lists the configurable parameters of the Redmine chart and their default values.
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
+|            Parameter              |              Description                 |                          Default                        | 
+| --------------------------------- | ---------------------------------------- | ------------------------------------------------------- |
+| `env`                             | additional env variables                 | `{}`                                                     |
+| `replicaCount`                    | Number of replicas to start              | `1`                                                     |
+| `image.repository`                | Bookstack image name                     | `solidnerd/bookstack`                                   |
+| `image.tag`                       | Bookstack image tag                      | `0.29.3`                                                |
+| `image.pullPolicy`                | Bookstack image pull policy              | `IfNotPresent`                                          |
+| `externalDatabase.host`           | Host of the external database            | `nil`                                                   |
+| `externalDatabase.port`           | Port of the external database            | `3306`                                                  |
+| `externalDatabase.user`           | Existing username in the external db     | `bookstack`                                             |
+| `externalDatabase.password`       | Password for the above username          | `nil`                                                   |
+| `externalDatabase.database`       | Name of the existing database            | `bookstack`                                             |
+| `mariadb.enabled`                 | Whether to use the MariaDB chart         | `true`                                                  |
+| `mariadb.db.name`                 | Database name to create                  | `bookstack`                                             |
+| `mariadb.db.user`                 | Database user to create                  | `bookstack`                                             |
+| `mariadb.db.password`             | Password for the database                | `nil`                                                   |
+| `mariadb.rootUser.password`        | MariaDB admin password                   | `nil`                                                   |
+| `mariadb.master.persistence.enabled`        | Enable MariaDB persistence using PVC     | `false`                                                  |
+| `mariadb.master.persistence.storageClass`   | PVC Storage Class for MariaDB volume     | `nil` (uses alpha storage class annotation)             |
+| `mariadb.master.persistence.accessMode`     | PVC Access Mode for MariaDB volume       | `ReadWriteOnce`                                         |
+| `mariadb.master.persistence.size`           | PVC Storage Request for MariaDB volume   | `8Gi`                                                   |
+| `service.type`                    | Desired service type                                | `ClusterIP`               |
+| `service.port`                    | Service exposed port                               | `80`                    |
+| `podSecurityPolicy.enabled`	    | Create & use Pod Security Policy resources  | `false`						      |
+| `rbac.create` 		            | Use Role-based Access Control		  | `true`						      |
+| `serviceAccount.create`	         | Should we create a ServiceAccount	          | `true`						      |
+| `serviceAccount.name`		         | Name of the ServiceAccount to use           | `null`					      |
+| `persistence.uploads.enabled`             | Enable persistence using PVC for uploads             | `true`                                      |
+| `persistence.uploads.storageClass`        | PVC Storage Class                        | `nil` (uses alpha storage class annotation)             |
+| `persistence.uploads.accessMode`          | PVC Access Mode                          | `ReadWriteOnce`                                         |
+| `persistence.uploads.size`                | PVC Storage Request                      | `8Gi`                                                   |
+| `persistence.uploads.existingClaim`        | If PVC exists & bounded for uploads   | `nil` (when nil, new one is requested)                  |
+| `persistence.storage.enabled`             | Enable persistence using PVC for uploads             | `true`                                      |
+| `persistence.storage.storageClass`        | PVC Storage Class                        | `nil` (uses alpha storage class annotation)             |
+| `persistence.storage.accessMode`          | PVC Access Mode                          | `ReadWriteOnce`                                         |
+| `persistence.storage.size`                | PVC Storage Request                      | `8Gi`                                                   |
+| `persistence.storage.existingClaim`        | If PVC exists & bounded for storage   | `nil` (when nil, new one is requested)                  |
+| `ingress.enabled`                 | Enable or disable the ingress            | `false`                                                 |
+| `ingress.hosts`                   | The virtual host name(s)                 | `{}`                                 |
+| `ingress.annotations`             | An array of service annotations          | `nil`                                                   |
+| `ingress.tls[i].secretName`       | The secret kubernetes.io/tls             | `nil`                                                   |
+| `ingress.tls[i].hosts[j]`         | The virtual host name                    | `nil`                                                   |
+| `resources`                       | Resources allocation (Requests and Limits) | `{}` |
+| `ldap.enabled`                    | Enable or disable LDAP authentication. [See official docs for details](https://www.bookstackapp.com/docs/admin/ldap-auth/) | `false` |
+| `ldap.server`                    | LDAP server address | `nil` |
+| `ldap.base_dn`                    | Base DN where users will be searched | `nil` |
+| `ldap.dn`                    | User which will make search queries. Leave empty to search anonymously. | `nil` |
+| `ldap.pass`                    | Password of user performing search queries.  | `nil` |
+| `ldap.userFilter`                    | A filter to use when searching for users | `nil` |
+| `ldap.version`                    | Set the LDAP version to use when connecting to the server. Required especially when using AD. | `nil` |
 
-```console
-helm install bookstack \
-  --set env.TZ="America/New York" \
-    k8s-at-home/bookstack
+The above parameters map to the env variables defined in the [Bookstack image](https://hub.docker.com/r/solidnerd/bookstack/) and the MariaDB/MySQL database settings. For more information please refer to the [Bookstack](https://hub.docker.com/r/solidnerd/bookstack/) image documentation.
+
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
+
+```bash
+$ helm upgrade --install my-release \
+  --set podSecurityPolicy.enabled=true \
+    stable/bookstack
 ```
 
-Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart.
+The above command enables podSecurityPolicy.
 
-```console
-helm install bookstack k8s-at-home/bookstack -f values.yaml
+Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
+
+```bash
+$ helm upgrade --install my-release -f values.yaml stable/bookstack
 ```
 
-## Custom configuration
+> **Tip**: You can use the default [values.yaml](values.yaml)
 
-N/A
+## Replicas
 
-## Values
+Bookstack writes uploaded files to a persistent volume. By default that volume
+cannot be shared between pods (RWO). In such a configuration the `replicas` option
+must be set to `1`. If the persistent volume supports more than one writer
+(RWX), ie NFS, `replicaCount` can be greater than `1`.
 
-**Important**: When deploying an application Helm chart you can add more values from our common library chart [here](https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common)
+## Persistence
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| env | object | See below | environment variables. See more environment variables in the [bookstack documentation](https://hub.docker.com/r/linuxserver/bookstack) |
-| env.TZ | string | `"UTC"` | Set the container timezone |
-| image.pullPolicy | string | `"IfNotPresent"` | image tag |
-| image.repository | string | `"ghcr.io/linuxserver/bookstack"` | image repository |
-| image.tag | string | `"version-v21.12"` | image pull policy |
-| ingress.main | object | See values.yaml | Enable and configure ingress settings for the chart under this key. |
-| mariadb | object | See values.yaml | Enable and configure mariadb database subchart under this key.    For more options see [mariadb chart documentation](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). |
-| persistence | object | See values.yaml | Configure persistence settings for the chart under this key. |
-| service | object | See values.yaml | Configures service settings for the chart. |
+The [Bookstack](https://hub.docker.com/r/solidnerd/bookstack/) image stores the uploaded data at the `public/uploads` path, relative to the document root of the Bookstack application. Other misc. data is stored under the `public/storage` path, also relative to the document root of the application.
 
-## Changelog
+Persistent Volume Claims are used to keep the data across deployments. The volume is created using dynamic volume provisioning.
 
-All notable changes to this application Helm chart will be documented in this file but does not include changes from our common library. To read those click [here](https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common#changelog).
+See the [Configuration](#configuration) section to configure the PVC or to disable persistence.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### Existing PersistentVolumeClaims
 
-### [4.0.0]
+The following example includes two PVCs, one for uploads and another for misc. data.
 
-#### Changed
+1. Create the PersistentVolume
+1. Create the PersistentVolumeClaim
+1. Create the directory, on a worker
+1. Install the chart
 
-- **BREAKING**: Updated `mariadb` chart to version `10.2.0`. Check out the [chart documentation](https://github.com/bitnami/charts/tree/master/bitnami/mariadb#to-1000) to see which values have changed.
-- Updated the common library dependency to version 4.3.0.
-- Changed image tag to `version-v21.12`.
-
-### [3.0.0]
-
-#### Changed
-
-- Upgraded the common library dependency to version 4.0.0. This introduced (potentially) breaking changes to `initContainers` and `additionalContainers`. Be sure to check out the [library chart](https://github.com/k8s-at-home/library-charts/blob/common-4.0.0/charts/stable/common/) for the up-to-date values.
-
-### [2.0.0]
-
-#### Changed
-
-- **BREAKING**: Upgraded the common library dependency to version 3.0.1. This introduces several breaking changes (`service`, `ingress` and `persistence` keys have been refactored).
-  Be sure to check out the [library chart](https://github.com/k8s-at-home/library-charts/blob/common-3.0.0/charts/stable/common/) for the up-to-date values.
-- Changed image tag to `version-v21.05.1`.
-
-### [1.0.0]
-
-#### Added
-
-- Initial version
-
-#### Changed
-
-- N/A
-
-#### Removed
-
-- N/A
-
-[4.0.0]: #400
-[3.0.0]: #300
-[2.0.0]: #200
-[1.0.0]: #100
-
-## Support
-
-- See the [Docs](https://docs.k8s-at-home.com/our-helm-charts/getting-started/)
-- Open an [issue](https://github.com/k8s-at-home/charts/issues/new/choose)
-- Ask a [question](https://github.com/k8s-at-home/organization/discussions)
-- Join our [Discord](https://discord.gg/sTMX7Vh) community
-
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.5.0](https://github.com/norwoodj/helm-docs/releases/v1.5.0)
+```bash
+$ helm upgrade --install test --set persistence.uploads.existingClaim=PVC_UPLOADS,persistence.storage.existingClaim=PVC_STORAGE stable/bookstack
+```
